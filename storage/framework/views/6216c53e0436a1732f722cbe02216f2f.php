@@ -1,0 +1,1 @@
+<h1><?php echo e($data); ?></h1><?php /**PATH /Users/rbjdonor/Development/repos/Pokedex/resources/views/index.blade.php ENDPATH**/ ?>
