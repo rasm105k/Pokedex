@@ -1,12 +1,1 @@
-/vendor/
-/node_modules/
-/public/build/
-/storage/*.key
-/storage/pail
-.env
-.env.*
-!.env.example
-/database/*.sqlite
-.phpunit.result.cache
-.phpunit.cache/
 node_modules
