@@ -9,3 +9,4 @@
 /database/*.sqlite
 .phpunit.result.cache
 .phpunit.cache/
+node_modules
