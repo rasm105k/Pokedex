@@ -3,12 +3,6 @@
         &larr; Back to all Pokémon
     </a>
 
-    @if (session('success'))
-        <div class="mb-6 rounded-lg border border-emerald-800 bg-emerald-950/50 px-4 py-3 text-sm text-emerald-200">
-            {{ session('success') }}
-        </div>
-    @endif
-
     <div class="grid gap-8 rounded-2xl border border-slate-800 bg-slate-900 p-6 md:grid-cols-2">
         <div class="flex flex-col items-center justify-center rounded-xl bg-slate-950/50 p-6">
             <div class="flex flex-wrap items-center justify-center gap-4">
@@ -46,13 +40,10 @@
                 </div>
             </dl>
 
-            <form method="POST" action="{{ route('setStarter', $pokemon->name) }}" class="mt-6">
-                @csrf
-                <button type="submit"
-                        class="rounded-lg bg-red-500 px-5 py-2.5 font-medium text-white transition hover:bg-red-600">
-                    Choose as starter
-                </button>
-            </form>
+            <a href="{{ route('setStarter', $pokemon->name) }}"
+               class="mt-6 inline-block rounded-lg bg-red-500 px-5 py-2.5 font-medium text-white transition hover:bg-red-600">
+                Choose as starter
+            </a>
         </div>
     </div>
 
