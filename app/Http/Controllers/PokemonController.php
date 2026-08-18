@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\Pokemon;
 use Illuminate\Support\Facades\Http;
-use DB;
 
 class PokemonController extends Controller
 {
@@ -10,7 +11,7 @@ class PokemonController extends Controller
     private $starters = [];
 
     public function __construct() {
-        $this->baseUrl = env('POKEAPI_BASE_URL'); 
+        $this->baseUrl = env('POKEAPI_BASE_URL');
     }
 
     public function index(){
@@ -19,26 +20,41 @@ class PokemonController extends Controller
         return view("pokemons")->with(['pokemons' => $pokemons]);
     }
 
-    
     public function details(string $name){
         $pokemon = $this->getPokemon($name);
-        return view("details")->with($pokemon);
-        }
-        
-    public function getMyStarters(){
-        
-        $starters = DB::select('pokemon')->get();
-        dd($starters);
+        $starters = $this->starterQuery()->get();
 
-        return $starters;
+        return view("details")
+            ->with($pokemon)
+            ->with(['starters' => $starters]);
+    }
+
+    public function getMyStarters(){
+        return $this->starterQuery()->get();
     }
 
     public function setStarter(string $name){
-        $pokemon = $this->getPokemon($name);
-        $this->starters[$name] = $pokemon;
-        dd($this->starters);
+        $pokemon = $this->getPokemon($name)['pokemon'];
+
+        Pokemon::updateOrCreate(
+            ['pokeapi_id' => $pokemon->id],
+            [
+                'name' => $pokemon->name,
+                'sprite_url' => $pokemon->sprites->front_default ?? null,
+                'is_starter' => true,
+            ]
+        );
+
+        return redirect()->route('details', $pokemon->name);
     }
-            
+
+    private function starterQuery()
+    {
+        return Pokemon::query()
+            ->where('is_starter', true)
+            ->orderBy('name');
+    }
+
     private function getPokemon(string $name)
     {
         $pokemon = Http::baseUrl($this->baseUrl)->get("pokemon/{$name}");
