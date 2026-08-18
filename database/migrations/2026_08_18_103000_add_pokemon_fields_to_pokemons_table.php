@@ -9,8 +9,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('pokemons', function (Blueprint $table) {
-            $table->unsignedInteger('pokeapi_id')->unique()->after('id');
-            $table->string('name')->unique()->after('pokeapi_id');
+            $table->unsignedInteger('pokeapi_id')->nullable()->unique()->after('id');
+            $table->string('name')->nullable()->unique()->after('pokeapi_id');
             $table->string('sprite_url')->nullable()->after('name');
             $table->boolean('is_starter')->default(true)->after('sprite_url');
         });
